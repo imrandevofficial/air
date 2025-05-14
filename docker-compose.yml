@@ -43,7 +43,7 @@ services:
     env_file:
       - .env
     ports:
-      - "8001:8001"
+      - "8007:8007"
     volumes:
       - ./backend:/app
     # These variables override any from .env file
@@ -54,7 +54,7 @@ services:
       - REDIS_HOST=redis
       - QDRANT_HOST=qdrant
       - QDRANT_PORT=6333
-      - TEXT2VEC_INFERENCE_URL=http://text2vec-transformers:8080
+      - TEXT2VEC_INFERENCE_URL=http://text2vec-transformers:8088
       # These ensure services run properly inside containers
       - LOCAL_DEVELOPMENT=false
     depends_on:
@@ -79,7 +79,7 @@ services:
     ports:
       - "${FRONTEND_LOCAL_DEVELOPMENT_PORT:-8080}:8080"
     environment:
-      - API_URL=http://localhost:8001
+      - API_URL=http://localhost:8007
       - ENABLE_AUTH=false
     depends_on:
       backend:
@@ -100,7 +100,7 @@ services:
       ENABLE_CUDA: 0
       WORKERS_PER_NODE: 1
     healthcheck:
-      test: [ "CMD", "wget", "--spider", "-q", "http://localhost:8080/health" ]
+      test: [ "CMD", "wget", "--spider", "-q", "http://localhost:8088/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
